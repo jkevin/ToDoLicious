@@ -22,9 +22,13 @@ struct ContentView: View {
                     Text("No todo lists!").scaledToFill()
                 } else {
                     ForEach($todoLists) { $todoList in
-                    NavigationLink(destination: TodoListView(todoList: $todoList)) {
-                        Text(todoList.title)
-                    }
+                        if(isEditing) {
+                            TextField("List title", text: $todoList.title)
+                        } else {
+                            NavigationLink(destination: TodoListView(todoList: $todoList)) {
+                                Text(todoList.title)
+                            }
+                        }
                     }.onDelete {toDelete in
                         todoLists.remove(atOffsets: toDelete)
                         if todoLists.isEmpty {
@@ -65,12 +69,12 @@ struct ContentView: View {
         
     }
 }
-    
-    struct ContentView_Previews: PreviewProvider {
-        static var previews: some View {
-            Group {
-                ContentView(todoLists: .constant(TodoList.sampleData), saveAction: {})
-                    .previewInterfaceOrientation(.portrait)
-            }
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            ContentView(todoLists: .constant(TodoList.sampleData), saveAction: {})
+                .previewInterfaceOrientation(.portrait)
         }
     }
+}

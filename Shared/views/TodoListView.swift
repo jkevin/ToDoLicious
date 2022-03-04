@@ -20,7 +20,11 @@ struct TodoListView: View {
                     Text("No todos!")
                 } else {
                     ForEach($todoList.todos) {$todo in
-                        Toggle(todo.name, isOn: $todo.completed).toggleStyle(.switch)
+                        if(isEditing) {
+                            TextField("Todo name", text: $todo.name)
+                        } else {
+                            Toggle(todo.name, isOn: $todo.completed).toggleStyle(.switch)
+                        }
                     }.onDelete {toDelete in
                         todoList.todos.remove(atOffsets: toDelete)
                         if todoList.todos.isEmpty {
